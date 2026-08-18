@@ -1,0 +1,19 @@
+name: EdgeSense CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r gateway/requirements.txt
+      - run: PYTHONPATH=gateway pytest gateway/tests -q
+      - run: cmake -S firmware -B build -DEDGESENSE_BUILD_TESTS=ON
+      - run: cmake --build build
+      - run: ctest --test-dir build --output-on-failure
