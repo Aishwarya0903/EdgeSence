@@ -1,0 +1,7 @@
+services:
+  gateway:
+    build:
+      context: ./gateway
+    ports:
+      - "8000:8000"
+      - "9000:9000"
